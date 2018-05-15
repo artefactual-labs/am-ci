@@ -67,6 +67,10 @@ run:
               --tags=mo-aip-reingest \
               --stop --no-skipped -v \
               --no-logcapture \
+              -D ssh_accessible=yes \
+              -D ssh_requires_password=no \
+              -D ssh_identity_file=keys/id_rsa \
+              -D server_user=artefactual \
               -D driver_name=$DRIVER_NAME \
               -D ssh_accessible=yes \
               -D am_username=$AM_DASHBOARD_USERNAME \

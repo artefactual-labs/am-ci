@@ -30,6 +30,10 @@ run:
     set -o nounset
     set -o xtrace
 
+    # Add the artefactual user to the archivematica group so the acceptance
+    # tests can access to the shared directory.
+    sudo gpasswd --add artefactual archivematica
+
     # Install management commands (shortcuts)
     curl -Ls https://git.io/vpC3m | sudo bash -
 
