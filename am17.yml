@@ -31,10 +31,26 @@ resources:
     uri: "https://github.com/artefactual-labs/am-ci"
     branch: main
 
-- name: slack-notification
-  type: slack-notification
-  source:
-    url: ((slack_webhook))
+#- name: slack-notification
+#  type: slack-notification
+#  source:
+#    url: ((slack_webhook))
+
+groups:
+
+- name: fresh-installs
+  jobs:
+  - start-testing
+  - acceptance-tests-pkg-centos-7
+  - acceptance-tests-ansible-ubuntu-14-04
+  - acceptance-tests-ansible-ubuntu-16-04
+
+- name: upgrades
+  jobs:
+  - start-testing
+  - acceptance-tests-upgrade-pkg-centos-7
+  - acceptance-tests-upgrade-ansible-ubuntu-14-04
+  - acceptance-tests-upgrade-ansible-ubuntu-16-04
 
 jobs:
 
@@ -273,20 +289,3 @@ jobs:
     - task: upgrade-archivematica
       file: am-ci/acceptance-tests/upgrade-archivematica.yml
       timeout: 1h
-
-- name: done
-  plan:
-  - get: am-ci
-    passed:
-    - "acceptance-tests-pkg-centos-7"
-    - "acceptance-tests-ansible-ubuntu-14-04"
-    - "acceptance-tests-ansible-ubuntu-16-04"
-    trigger: true
-  - put: slack-notification
-    params:
-      channel: "@sevein"
-      username: "qubot"
-      icon_emoji: ":artefactual:"
-      text: |
-        The build has finished successfully! Check it out at:
-        https://ci.archivematica.org/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME
