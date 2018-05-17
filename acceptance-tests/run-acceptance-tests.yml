@@ -59,12 +59,14 @@ run:
       ./createtransfers/createtransfers.py create-deep-transfers
     popd
 
+    # ignored tags: pid-bindings, uuids-dir
+
     pushd /home/artefactual/acceptance-tests
       env \
         HUB_ADDRESS=http://$SELENIUM_HUB_HOST:$SELENIUM_HUB_PORT/wd/hub \
         HEADLESS=1 \
           behave \
-              --tags=mo-aip-reingest \
+              --tags=mo-aip-reingest,ipc,icc,tpc,picc,premis-events,aip-encrypt-mirror,aip-encrypt \
               --stop --no-skipped -v \
               --no-logcapture \
               -D ssh_accessible=yes \
