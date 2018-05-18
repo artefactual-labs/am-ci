@@ -44,7 +44,10 @@ run:
     private_ip=$(cat instance/private_ip)
     echo "@@@@ Private IP: ${private_ip}"
 
-    inputs_dir=$(pwd)
+
+    tmp_dir=$(mktemp -d)
+    sudo cp keys/id_rsa ${tmp_dir}/id_rsa
+    sudo chown artefactual:artefactual ${tmp_dir}/id_rsa
 
     # The ending slash matters.
     am_url=http://${private_ip}:$AM_PORT/
@@ -73,7 +76,7 @@ run:
               --no-logcapture \
               -D ssh_accessible=yes \
               -D ssh_requires_password=no \
-              -D ssh_identity_file=${inputs_dir}/keys/id_rsa \
+              -D ssh_identity_file=${tmp_dir}/id_rsa \
               -D server_user=artefactual \
               -D driver_name=$DRIVER_NAME \
               -D ssh_accessible=yes \
