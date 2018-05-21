@@ -23,4 +23,4 @@ run:
     cp config/.tugboat .
 
     # Disabled so I can debug it.
-    # tugboat destroy --confirm $DROPLET_NAME
+    tugboat destroy --confirm $DROPLET_NAME

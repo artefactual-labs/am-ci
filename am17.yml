@@ -81,8 +81,9 @@ jobs:
       DROPLET_NAME: "archivematica-ci-tests-pkg-centos-7"
     timeout: 5m
   - ensure:
+      # acceptance-tests/teardown-droplet.yml disabled so VMs can be debugged.
       task: teardown
-      file: am-ci/acceptance-tests/teardown-droplet.yml
+      file: am-ci/mixins/noop.yml
       params:
         DROPLET_NAME: "archivematica-ci-tests-pkg-centos-7"
       timeout: 5m
@@ -131,8 +132,9 @@ jobs:
       DROPLET_NAME: "archivematica-ci-tests-ansible-ubuntu-16-04"
     timeout: 5m
   - ensure:
+      # acceptance-tests/teardown-droplet.yml disabled so VMs can be debugged.
       task: teardown
-      file: am-ci/acceptance-tests/teardown-droplet.yml
+      file: am-ci/mixins/noop.yml
       params:
         DROPLET_NAME: "archivematica-ci-tests-ansible-ubuntu-16-04"
       timeout: 5m
@@ -174,8 +176,9 @@ jobs:
       DROPLET_NAME: "archivematica-ci-tests-ansible-ubuntu-14-04"
     timeout: 5m
   - ensure:
+      # acceptance-tests/teardown-droplet.yml disabled so VMs can be debugged.
       task: teardown
-      file: am-ci/acceptance-tests/teardown-droplet.yml
+      file: am-ci/mixins/noop.yml
       params:
         DROPLET_NAME: "archivematica-ci-tests-ansible-ubuntu-14-04"
       timeout: 5m
