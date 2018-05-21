@@ -103,7 +103,6 @@ jobs:
         AM_PORT: "81"
         SS_PORT: "8001"
       timeout: 2h
-      attempts: 2
 
 - name: acceptance-tests-ansible-ubuntu-16-04
   interruptible: true
@@ -147,7 +146,6 @@ jobs:
         SELENIUM_HUB_HOST: ((selenium_hub.private))
         SELENIUM_HUB_PORT: ((selenium_hub.port))
       timeout: 2h
-      attempts: 2
 
 - name: acceptance-tests-ansible-ubuntu-14-04
   interruptible: true
@@ -191,4 +189,3 @@ jobs:
         SELENIUM_HUB_HOST: ((selenium_hub.private))
         SELENIUM_HUB_PORT: ((selenium_hub.port))
       timeout: 2h
-      attempts: 2

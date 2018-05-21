@@ -63,8 +63,21 @@ run:
       ./createtransfers/createtransfers.py create-deep-transfers
     popd
 
-    test() {
-      tag=${1}
+    failed=0
+    tags=(
+      mo-aip-reingest
+      ipc
+      icc
+      tpc
+      picc
+      premis-events
+      aip-encrypt-mirror
+      aip-encrypt
+      # pid-bindings
+      # uuids-dir
+    )
+
+    for tag in ${tags[@]}; do
       pushd /home/artefactual/acceptance-tests
         env \
           HUB_ADDRESS=http://$SELENIUM_HUB_HOST:$SELENIUM_HUB_PORT/wd/hub \
@@ -72,7 +85,6 @@ run:
             behave \
               --tags=${tag} \
               --no-skipped -v \
-              --no-logcapture \
               -D ssh_accessible=yes \
               -D ssh_requires_password=no \
               -D ssh_identity_file=${tmp_dir}/id_rsa \
@@ -89,29 +101,15 @@ run:
               -D ss_url=${ss_url} \
               -D ss_api_key=$AM_SS_API_KEY \
               -D transfer_source_path=artefactual/archivematica-sampledata/TestTransfers/acceptance-tests \
-              -D home=artefactual \
-            && rc=$? || rc=$?
+              -D home=artefactual && rc=$? || rc=$?
       popd
-      echo ${rc}
-    }
 
-    failed=0
-    tags=(
-      mo-aip-reingest
-      ipc
-      icc
-      tpc
-      picc
-      premis-events
-      aip-encrypt-mirror
-      aip-encrypt
-      # pid-bindings
-      # uuids-dir
-    )
-
-    for tag in ${tags[@]}; do
-      rc=$(test ${tag})
       if ((rc > 0)); then ((failed++)); fi;
+
+      # Visual separator between tests.
+      echo "-------------------------------------------------------------------"
+      echo "-------------------------------------------------------------------"
+      echo "-------------------------------------------------------------------"
     done
 
     exit ${failed}
