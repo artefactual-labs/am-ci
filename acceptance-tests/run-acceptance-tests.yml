@@ -70,7 +70,7 @@ run:
           HUB_ADDRESS=http://$SELENIUM_HUB_HOST:$SELENIUM_HUB_PORT/wd/hub \
           HEADLESS=1 \
             behave \
-              --tags=${tag}
+              --tags=${tag} \
               --no-skipped -v \
               --no-logcapture \
               -D ssh_accessible=yes \
