@@ -44,7 +44,6 @@ run:
     private_ip=$(cat instance/private_ip)
     echo "@@@@ Private IP: ${private_ip}"
 
-
     tmp_dir=$(mktemp -d)
     sudo cp keys/id_rsa ${tmp_dir}/id_rsa
     sudo chown artefactual:artefactual ${tmp_dir}/id_rsa
@@ -64,15 +63,15 @@ run:
       ./createtransfers/createtransfers.py create-deep-transfers
     popd
 
-    # ignored tags: pid-bindings, uuids-dir
-
-    pushd /home/artefactual/acceptance-tests
-      env \
-        HUB_ADDRESS=http://$SELENIUM_HUB_HOST:$SELENIUM_HUB_PORT/wd/hub \
-        HEADLESS=1 \
-          behave \
-              --tags=mo-aip-reingest,ipc,icc,tpc,picc,premis-events,aip-encrypt-mirror,aip-encrypt \
-              --stop --no-skipped -v \
+    test() {
+      tag=${1}
+      pushd /home/artefactual/acceptance-tests
+        env \
+          HUB_ADDRESS=http://$SELENIUM_HUB_HOST:$SELENIUM_HUB_PORT/wd/hub \
+          HEADLESS=1 \
+            behave \
+              --tags=${tag}
+              --no-skipped -v \
               --no-logcapture \
               -D ssh_accessible=yes \
               -D ssh_requires_password=no \
@@ -90,5 +89,29 @@ run:
               -D ss_url=${ss_url} \
               -D ss_api_key=$AM_SS_API_KEY \
               -D transfer_source_path=artefactual/archivematica-sampledata/TestTransfers/acceptance-tests \
-              -D home=artefactual
-    popd
+              -D home=artefactual \
+            && rc=$? || rc=$?
+      popd
+      echo ${rc}
+    }
+
+    failed=0
+    tags=(
+      mo-aip-reingest
+      ipc
+      icc
+      tpc
+      picc
+      premis-events
+      aip-encrypt-mirror
+      aip-encrypt
+      # pid-bindings
+      # uuids-dir
+    )
+
+    for tag in ${tags[@]}; do
+      rc=$(test ${tag})
+      if ((rc > 0)); then ((failed++)); fi;
+    done
+
+    exit ${failed}
