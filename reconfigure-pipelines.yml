@@ -51,6 +51,9 @@ jobs:
       - name: am17
         team: main
         config_file: pipelines/am17.yml
+      - name: am17-upgrades
+        team: main
+        config_file: pipelines/am17-upgrades.yml
       - name: experiment-release-version
         team: main
         config_file: pipelines/experiment-release-version.yml
